@@ -1,7 +1,15 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
+
+import { Accessory } from '../../components/Accessory';
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
+import speedSvg from '../../assets/speed.svg'
+import accelerationSvg from '../../assets/acceleration.svg'
+import forceSvg from '../../assets/force.svg';
+import gasolineSvg from '../../assets/gasoline.svg';
+import exchangeSvg from '../../assets/exchange.svg';
+import peopleSvg from '../../assets/people.svg';
 
 import S from './styled';
 
@@ -35,6 +43,15 @@ const CarDetails = () => {
             <S.TextPrice>R$ 580</S.TextPrice>
           </S.BoxRent>
         </S.BoxDetails>
+
+        <S.BoxAccessoriesInfo>
+          <Accessory name="380km/h" icon={speedSvg} />
+          <Accessory icon={accelerationSvg} name="3.2s" />
+          <Accessory icon={forceSvg} name="800 HP" />
+          <Accessory icon={gasolineSvg} name="Gasolina" />
+          <Accessory icon={exchangeSvg} name="Auto" />
+          <Accessory icon={peopleSvg} name="2 Pessoas" />
+        </S.BoxAccessoriesInfo>
 
         <S.BoxAbout>
           Este automóvel desportivo. Surgio o lendário touro lide de vendas e massificado o 
