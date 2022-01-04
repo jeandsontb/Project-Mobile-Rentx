@@ -1,4 +1,5 @@
 import { RFValue } from 'react-native-responsive-fontsize';
+import { FlatList } from 'react-native';
 import styled from 'styled-components/native';
 
 export default {
@@ -23,4 +24,10 @@ export default {
     font-family: ${({theme}) => theme.fonts.primary_400};
     color: ${({theme}) => theme.colors.text};
   `,
+  ListCarComponent: styled(FlatList).attrs({
+    contentContainerStyle: {
+      padding: 24
+    },
+    showsVerticalScrollIndicator: false
+  })``,
 }

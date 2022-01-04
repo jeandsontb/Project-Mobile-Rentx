@@ -19,16 +19,6 @@ const Home = () => {
     thumbnail: 'https://cdn.sitewebmotors.com.br/uploads/userGallery/5fcfe53240728.png'
   }
 
-  const dataTwo = {
-    brand: 'PORCHE',
-    name: 'Panamera',
-    rent: {
-      period: 'AO DIA',
-      price: 320,
-    },
-    thumbnail: 'https://freebiescloud.com/wp-content/uploads/2021/02/PORSCHE-PANAMERA-2021-1.png'
-  }
-
   return (
     <S.Container>
       <StatusBar 
@@ -48,8 +38,12 @@ const Home = () => {
         </S.BoxContent>
       </S.BoxHeader>
 
-      <Car data={dataOne} />
-      <Car data={dataTwo} />
+      <S.ListCarComponent 
+        data={[1, 2, 3, 4, 5, 6, 7]}
+        keyExtractor={item => String(item)}
+        renderItem={({item}) => <Car data={dataOne} />}
+      />
+      
     </S.Container>
   );
 }
