@@ -4,6 +4,7 @@ import { StatusBar } from 'react-native';
 import { Accessory } from '../../components/Accessory';
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
+import { Button } from '../../components/Button';
 import speedSvg from '../../assets/speed.svg'
 import accelerationSvg from '../../assets/acceleration.svg'
 import forceSvg from '../../assets/force.svg';
@@ -59,6 +60,10 @@ const CarDetails = () => {
           acelerar
         </S.BoxAbout>
       </S.BoxContent>
+
+      <S.BoxFooter>
+        <Button title="Confirmar" />
+      </S.BoxFooter>
     </S.Container>
   );
 }
