@@ -7,6 +7,7 @@ import ArrowSvg from '../../assets/arrow.svg';
 
 import S from './styled';
 import { Button } from '../../components/Button';
+import { Calendar } from '../../components/Calendar';
 
 const Scheduling = () => {
 
@@ -52,7 +53,7 @@ const Scheduling = () => {
       </S.Header>
 
       <S.BoxContent>
-
+        <Calendar />
       </S.BoxContent>
 
       <S.BoxFooter>
