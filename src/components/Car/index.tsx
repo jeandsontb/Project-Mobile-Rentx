@@ -3,7 +3,6 @@ import { TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from 'react-n
 
 import S from './styled';
 import GasolineSvg from '../../assets/gasoline.svg';
-import { RectButtonProps } from 'react-native-gesture-handler';
 
 interface ICarData {
   brand: string;
