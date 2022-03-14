@@ -4,6 +4,7 @@ import { TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from 'react-n
 import S from './styled';
 import GasolineSvg from '../../assets/gasoline.svg';
 
+
 interface ICarData {
   brand: string;
   name: string;
