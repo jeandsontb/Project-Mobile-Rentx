@@ -1,6 +1,8 @@
 import { RFValue } from 'react-native-responsive-fontsize';
-import { FlatList } from 'react-native';
+import { FlatList, FlatListProps } from 'react-native';
 import styled from 'styled-components/native';
+
+import { CarsDtosData } from '../../Dtos/catDto';
 
 export default {
   Container: styled.View`
@@ -24,7 +26,8 @@ export default {
     font-family: ${({theme}) => theme.fonts.primary_400};
     color: ${({theme}) => theme.colors.text};
   `,
-  ListCarComponent: styled(FlatList).attrs({
+  ListCarComponent: styled(FlatList as new 
+    (props: FlatListProps<CarsDtosData>) => FlatList<CarsDtosData>).attrs({
     contentContainerStyle: {
       padding: 24
     },

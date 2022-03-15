@@ -1,5 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { Accessory } from '../../components/Accessory';
 import { BackButton } from '../../components/BackButton';
@@ -15,6 +16,12 @@ import peopleSvg from '../../assets/people.svg';
 import S from './styled';
 
 const CarDetails = () => {
+  const navigation = useNavigation<any>();
+
+  const handleConfirmRental = () => {
+    navigation.navigate('Scheduling');
+  }
+
   return (
     <S.Container>
       <StatusBar 
@@ -62,7 +69,7 @@ const CarDetails = () => {
       </S.BoxContent>
 
       <S.BoxFooter>
-        <Button title="Confirmar" />
+        <Button title="Escolher período do aluguel" onPress={handleConfirmRental} />
       </S.BoxFooter>
     </S.Container>
   );

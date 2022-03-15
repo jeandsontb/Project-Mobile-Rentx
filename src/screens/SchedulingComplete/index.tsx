@@ -5,9 +5,15 @@ import LogoSvg from '../../assets/logo_background_gray.svg';
 import DoneSvg from '../../assets/done.svg';
 import S from './styled';
 import { ConfirmButton } from '../../components/ConfirmButton';
+import { useNavigation } from '@react-navigation/native';
 
 const SchedulingComplete = () => {
   const { width } = useWindowDimensions();
+  const navigation = useNavigation<any>()
+
+  const handleConfirm = () => {
+    navigation.navigate('Home');
+  }
 
   return (
     <S.Container>
@@ -30,7 +36,7 @@ const SchedulingComplete = () => {
       </S.Content>
 
       <S.BoxFooter>
-        <ConfirmButton title="OK"/>
+        <ConfirmButton title="OK"  onPress={handleConfirm}/>
       </S.BoxFooter>
     </S.Container>
   );

@@ -16,9 +16,15 @@ import exchangeSvg from '../../assets/exchange.svg';
 import peopleSvg from '../../assets/people.svg';
 
 import S from './styled';
+import { useNavigation } from '@react-navigation/native';
 
 const SchedulingDetails = () => {
   const theme = useTheme();
+  const navigation = useNavigation<any>();
+
+  const handleConfirmRental = () => {
+    navigation.navigate('SchedulingComplete');
+  }
 
   return (
     <S.Container>
@@ -96,7 +102,11 @@ const SchedulingDetails = () => {
       </S.BoxContent>
 
       <S.BoxFooter>
-        <Button title="Confirmar" />
+        <Button 
+          title="Alugar agora" 
+          color={theme.colors.success} 
+          onPress={handleConfirmRental} 
+        />
       </S.BoxFooter>
     </S.Container>
   );
