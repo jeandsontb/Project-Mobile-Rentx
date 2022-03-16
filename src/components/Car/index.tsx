@@ -2,24 +2,17 @@ import React from 'react';
 import { TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from 'react-native';
 
 import S from './styled';
-import GasolineSvg from '../../assets/gasoline.svg';
-
-
-interface ICarData {
-  brand: string;
-  name: string;
-  rent: {
-    period: string;
-    price: number;
-  };
-  thumbnail: string;
-}
+import { getAcessoryIcon } from '../../utils/getAcessoryIcon';
+import { CarsDtosData } from '../../Dtos/catDto';
 
 interface IDataProps  extends TouchableWithoutFeedbackProps {
-  data: ICarData;
+  data: CarsDtosData;
 }
 
 const Car = ({ data, ...rest }: IDataProps) => {
+
+  const MotorIcon = getAcessoryIcon(data.fuel_type);
+
   return (
     <TouchableWithoutFeedback {...rest}>
       <S.Container>
@@ -34,7 +27,7 @@ const Car = ({ data, ...rest }: IDataProps) => {
             </S.BoxRent>
 
             <S.BoxType>
-              <GasolineSvg />
+              <MotorIcon />
             </S.BoxType>
           </S.BoxAbout>
         </S.BoxDetails>

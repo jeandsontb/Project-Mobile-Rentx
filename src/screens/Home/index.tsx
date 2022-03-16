@@ -18,47 +18,30 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-
-    const oi = async () => {
-      const { data } = await api.get('/cars');
-      console.log(data);
+    const fetchCars = async () => {
+      try {
+        const { data } = await api.get('/cars');
+        if(data) {
+          setCars(data);
+        }        
+      } catch (err) {
+        Alert.alert(
+          "Opss!", 
+          "Não foi possível carregar a lista de carros", [
+          { 
+            text: "OK", onPress: () => console.log("OK") 
+          }
+        ])
+      } finally {
+        setLoading(false);
+      }
     }
 
-    oi();
-    // const fetchCars = async () => {
-    //   try {
-    //     const { data } = await api.get('/cars');
-    //     if(data) {
-    //       setCars(data);
-    //     }        
-    //   } catch (err) {
-    //     Alert.alert(
-    //       "Opss!", 
-    //       "Não foi possível carregar a lista de carros", [
-    //       { 
-    //         text: "OK", onPress: () => console.log("OK") 
-    //       }
-    //     ])
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // }
-
-    // fetchCars();
+    fetchCars();
   }, []);
 
-  const dataOne = {
-    brand: 'AUDI',
-    name: 'RS 5 Coupé',
-    rent: {
-      period: 'AO DIA',
-      price: 120,
-    },
-    thumbnail: 'https://cdn.sitewebmotors.com.br/uploads/userGallery/5fcfe53240728.png'
-  }
-
-  const handleCarDetails = () => {
-    navigation.navigate('CarDetails');
+  const handleCarDetails = (car: CarsDtosData) => {
+    navigation.navigate('CarDetails', {car});
   }
 
   return (
@@ -85,7 +68,7 @@ const Home = () => {
         : <S.ListCarComponent 
           data={cars}
           keyExtractor={item => item.id}
-          renderItem={({item}) => <Car data={item} onPress={handleCarDetails} />}
+          renderItem={({item}) => <Car data={item} onPress={() => handleCarDetails(item)} />}
         />
       }
       
