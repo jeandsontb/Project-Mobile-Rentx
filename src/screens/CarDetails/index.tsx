@@ -72,6 +72,7 @@ const CarDetails = () => {
         </S.BoxAccessoriesInfo>
 
         <S.BoxAbout>{car.about}</S.BoxAbout>
+        
       </S.BoxContent>
 
       <S.BoxFooter>
