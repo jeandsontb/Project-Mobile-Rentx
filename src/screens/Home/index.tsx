@@ -58,7 +58,7 @@ const Home = () => {
             height={RFValue(12)}
           />
           <S.TextHeaderTotal>
-            Total de 12 carros
+            Total de {cars.length} carros
           </S.TextHeaderTotal>
         </S.BoxContent>
       </S.BoxHeader>

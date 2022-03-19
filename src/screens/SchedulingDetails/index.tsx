@@ -26,6 +26,10 @@ const SchedulingDetails = () => {
     navigation.navigate('SchedulingComplete');
   }
 
+  const handleBack = () => {
+    navigation.goBack();
+  }
+
   return (
     <S.Container>
       <StatusBar 
@@ -34,7 +38,7 @@ const SchedulingDetails = () => {
         backgroundColor="transparent"
       />
       <S.BoxHeader>
-        <BackButton onPress={() => {}} />
+        <BackButton onPress={handleBack} />
       </S.BoxHeader>
 
       <S.BoxCarImage>
