@@ -19,7 +19,7 @@ export default {
 TextTitle: styled.Text`
   color: ${({theme}) => theme.colors.shape};
   font-family: ${({theme}) => theme.fonts.secondary_600};
-  font-size: ${RFValue(28)}px;
+  font-size: ${RFValue(24)}px;
 `,
 TextSubTitle: styled.Text`
   color: ${({theme}) => theme.colors.shape};

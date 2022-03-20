@@ -61,9 +61,8 @@ const MyCars = () => {
         />
 
         <S.TextTitle>
-          Escolha uma {'\n'}
-          data de início e {'\n'}
-          fim do aluguel
+          Seus Agendamentos {'\n'}
+          estão aqui. {'\n'}
         </S.TextTitle>
 
         <S.TextSubTitle>
