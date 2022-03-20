@@ -1,5 +1,7 @@
 import React from 'react';
+import { ActivityIndicator } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native';
+import { useTheme } from 'styled-components';
 
 import S from './styled';
 
@@ -8,16 +10,28 @@ interface IButtonProps {
   color?: string;
   onPress: () => void;
   disabled?: boolean;
+  loading?: boolean;
 }
 
-const Button = ({title, color, onPress, disabled = false}: IButtonProps) => {
+const Button = ({
+  title, 
+  color, 
+  onPress, 
+  disabled = false,
+  loading = false
+}: IButtonProps) => {
+  const theme = useTheme();
+
   return (
     <TouchableWithoutFeedback 
       onPress={onPress} 
       disabled={disabled}
     >
-      <S.Container color={color} activePressButton={disabled}>
-        <S.TextButton>{title}</S.TextButton>
+      <S.Container color={color} activePressButton={disabled} loadingButton={loading}>
+        {disabled && loading 
+          ? <ActivityIndicator color={theme.colors.shape} />
+          : <S.TextButton>{title}</S.TextButton>
+        }
       </S.Container>
     </TouchableWithoutFeedback>
   );

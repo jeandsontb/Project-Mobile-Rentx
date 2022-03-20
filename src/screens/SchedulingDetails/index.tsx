@@ -34,10 +34,15 @@ const SchedulingDetails = () => {
   const { car, dates } = route.params as Params;
 
   const [ rentalPeriod, setRentalPeriod ] = useState<RentalPeriod>({} as RentalPeriod);
+  const [ isLoading, setIsLoading ] = useState(false);
+  const [ isDisabledButton, setIsDisabledButton ] = useState(false);
 
   const rentTotal = Number(dates.length * car.rent.price);
 
   const handleConfirmRental = async () => {
+    setIsLoading(true);
+    setIsDisabledButton(true);
+
     const { data } = await api.get(`/schedules_bycars/${car.id}`);
     const unavailable_dates = [
       // ...data.unavailable_dates,
@@ -47,7 +52,7 @@ const SchedulingDetails = () => {
     const verifyByCarRental = data.unavailable_dates.findIndex((car: any) => dates.includes(car))
 
     if(verifyByCarRental > -1) {
-      Alert.alert('Veículo já agendado par esse período');
+      Alert.alert('Veículo já agendado para esse período');
       return;
     } 
 
@@ -63,7 +68,11 @@ const SchedulingDetails = () => {
       unavailable_dates
     })
     .then(() => navigation.navigate('SchedulingComplete'))
-    .catch(() => Alert.alert('Não foi possível confirmar o agendamento'));
+    .catch(() => {
+      Alert.alert('Não foi possível confirmar o agendamento');
+      setIsLoading(false);
+      setIsDisabledButton(false);
+    });
   }
 
   const handleBack = () => {
@@ -174,6 +183,8 @@ const SchedulingDetails = () => {
           title="Alugar agora" 
           color={theme.colors.success} 
           onPress={handleConfirmRental} 
+          disabled={isDisabledButton}
+          loading={isLoading}
         />
       </S.BoxFooter>
     </S.Container>
