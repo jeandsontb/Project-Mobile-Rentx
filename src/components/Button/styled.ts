@@ -5,6 +5,7 @@ import styled from 'styled-components/native';
 
 interface IButtonProps extends TouchableWithoutFeedbackProps {
   color?: string;
+  activePressButton?: boolean;
 }
 
 export default {
@@ -16,6 +17,7 @@ export default {
     background-color: ${({theme, color}) =>
     color ? color : theme.colors.main
   };
+    opacity: ${({activePressButton}) => !activePressButton ? 1 : 0.5};
   `,
   TextButton: styled.Text`
     font-family: ${({theme}) => theme.fonts.primary_500};

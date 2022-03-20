@@ -1,5 +1,6 @@
-import React from 'react';
-import { StatusBar } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StatusBar, Alert } from 'react-native';
+import { format, parseISO } from 'date-fns';
 import { Feather } from '@expo/vector-icons';
 import {useTheme} from 'styled-components';
 import {RFValue} from 'react-native-responsive-fontsize';
@@ -8,27 +9,73 @@ import { Accessory } from '../../components/Accessory';
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
 import { Button } from '../../components/Button';
-import speedSvg from '../../assets/speed.svg'
-import accelerationSvg from '../../assets/acceleration.svg'
-import forceSvg from '../../assets/force.svg';
-import gasolineSvg from '../../assets/gasoline.svg';
-import exchangeSvg from '../../assets/exchange.svg';
-import peopleSvg from '../../assets/people.svg';
 
 import S from './styled';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { CarsDtosData } from '../../Dtos/catDto';
+import { getAcessoryIcon } from '../../utils/getAcessoryIcon';
+import { api } from '../../services/api';
+
+interface Params {
+  car: CarsDtosData;
+  dates: string[];
+}
+
+interface RentalPeriod {
+  start: string;
+  end: string;
+}
 
 const SchedulingDetails = () => {
   const theme = useTheme();
   const navigation = useNavigation<any>();
+  const route = useRoute();
 
-  const handleConfirmRental = () => {
-    navigation.navigate('SchedulingComplete');
+  const { car, dates } = route.params as Params;
+
+  const [ rentalPeriod, setRentalPeriod ] = useState<RentalPeriod>({} as RentalPeriod);
+
+  const rentTotal = Number(dates.length * car.rent.price);
+
+  const handleConfirmRental = async () => {
+    const { data } = await api.get(`/schedules_bycars/${car.id}`);
+    const unavailable_dates = [
+      // ...data.unavailable_dates,
+      ...dates,
+    ];
+
+    const verifyByCarRental = data.unavailable_dates.findIndex((car: any) => dates.includes(car))
+
+    if(verifyByCarRental > -1) {
+      Alert.alert('Veículo já agendado par esse período');
+      return;
+    } 
+
+    await api.post('/schedules_byuser', {
+      user_id: 1,
+      car,
+      startDate: format(parseISO(dates[0]), 'dd/MM/yyyy'),
+      endDate: format(parseISO(dates[dates.length - 1]), 'dd/MM/yyyy'),
+    });
+
+    api.put(`/schedules_bycars/${car.id}`, {
+      id: car.id,
+      unavailable_dates
+    })
+    .then(() => navigation.navigate('SchedulingComplete'))
+    .catch(() => Alert.alert('Não foi possível confirmar o agendamento'));
   }
 
   const handleBack = () => {
     navigation.goBack();
   }
+
+  useEffect(() => {
+    setRentalPeriod({
+      start: format(parseISO(dates[0]), 'dd/MM/yyyy'),
+      end: format(parseISO(dates[dates.length - 1]), 'dd/MM/yyyy'),
+    })
+  }, []);
 
   return (
     <S.Container>
@@ -43,30 +90,36 @@ const SchedulingDetails = () => {
 
       <S.BoxCarImage>
         <ImageSlider 
-          imagesUrl={['https://cdn.sitewebmotors.com.br/uploads/userGallery/5fcfe53240728.png']} 
+          imagesUrl={car.photos} 
         />
       </S.BoxCarImage>
 
       <S.BoxContent>
         <S.BoxDetails>
           <S.BoxDescription>
-            <S.TextBrand>Lamborguini</S.TextBrand>
-            <S.TextName>Huracan</S.TextName>
+            <S.TextBrand>{car.brand}</S.TextBrand>
+            <S.TextName>{car.name}</S.TextName>
           </S.BoxDescription>
 
           <S.BoxRent>
-            <S.TextPeriod>Ao Dia</S.TextPeriod>
-            <S.TextPrice>R$ 580</S.TextPrice>
+            <S.TextPeriod>{car.rent.period}</S.TextPeriod>
+            <S.TextPrice>
+              {new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+              }).format(car.rent.price)}
+            </S.TextPrice>
           </S.BoxRent>
         </S.BoxDetails>
 
         <S.BoxAccessoriesInfo>
-          <Accessory name="380km/h" icon={speedSvg} />
-          <Accessory icon={accelerationSvg} name="3.2s" />
-          <Accessory icon={forceSvg} name="800 HP" />
-          <Accessory icon={gasolineSvg} name="Gasolina" />
-          <Accessory icon={exchangeSvg} name="Auto" />
-          <Accessory icon={peopleSvg} name="2 Pessoas" />
+          {car.accessories.map(item => 
+            <Accessory 
+              key={item.type} 
+              name={item.name} 
+              icon={getAcessoryIcon(item.type)} 
+            />
+          )}
         </S.BoxAccessoriesInfo>
 
         <S.BoxRentalPeriod>
@@ -80,7 +133,7 @@ const SchedulingDetails = () => {
 
           <S.BoxDateInfo>
             <S.TextDateTitle>DE</S.TextDateTitle>
-            <S.TextDateValue>18/08/2022</S.TextDateValue>
+            <S.TextDateValue>{rentalPeriod.start}</S.TextDateValue>
           </S.BoxDateInfo>
 
           <Feather 
@@ -91,15 +144,26 @@ const SchedulingDetails = () => {
 
           <S.BoxDateInfo>
             <S.TextDateTitle>ATÉ</S.TextDateTitle>
-            <S.TextDateValue>18/08/2022</S.TextDateValue>
+            <S.TextDateValue>{rentalPeriod.end}</S.TextDateValue>
           </S.BoxDateInfo>
         </S.BoxRentalPeriod>
 
         <S.BoxRentalPrice>
           <S.TextRentalPriceLabel>TOTAL</S.TextRentalPriceLabel>
           <S.BoxRentalPriceDetails>
-            <S.TextRentalPriceQuota>R$ 580 x3 diárias</S.TextRentalPriceQuota>
-            <S.TextRentalPriceTotal>R$ 2.900</S.TextRentalPriceTotal>
+            <S.TextRentalPriceQuota>
+              {new Intl.NumberFormat('pt-BRL', {
+                style: 'currency',
+                currency: 'BRL'
+              }).format(car.rent.price)}
+              {` x ${dates.length} diárias`}
+            </S.TextRentalPriceQuota>
+            <S.TextRentalPriceTotal>
+              {new Intl.NumberFormat('pt-BRL', {
+                style: 'currency',
+                currency: 'BRL'
+              }).format(rentTotal)}
+            </S.TextRentalPriceTotal>
           </S.BoxRentalPriceDetails>
         </S.BoxRentalPrice>
         

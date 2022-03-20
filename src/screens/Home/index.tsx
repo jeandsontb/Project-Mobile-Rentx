@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar, Alert } from 'react-native';
+import { 
+  StatusBar, 
+  Alert,
+  TouchableWithoutFeedback,
+  TouchableWithoutFeedbackProps 
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from 'styled-components';
 
 import Logo from '../../assets/logo.svg';
 import { Car } from '../../components/Car';
@@ -13,6 +20,7 @@ import { Loading } from '../../components/Loading';
 
 const Home = () => {
   const navigation = useNavigation<any>();
+  const theme = useTheme();
 
   const [cars, setCars] = useState<CarsDtosData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -44,6 +52,10 @@ const Home = () => {
     navigation.navigate('CarDetails', {car});
   }
 
+  const handleOpenMyCars = () => {
+    navigation.navigate('MyCars');
+  }
+
   return (
     <S.Container>
       <StatusBar 
@@ -71,6 +83,16 @@ const Home = () => {
           renderItem={({item}) => <Car data={item} onPress={() => handleCarDetails(item)} />}
         />
       }
+
+      <TouchableWithoutFeedback onPress={handleOpenMyCars}>
+        <S.MyCarButton>
+          <Ionicons 
+            name="ios-car-sport" 
+            size={32} 
+            color={theme.colors.shape}
+            />          
+        </S.MyCarButton>
+      </TouchableWithoutFeedback>
       
     </S.Container>
   );

@@ -119,7 +119,8 @@ const Scheduling = () => {
       <S.BoxFooter>
         <Button
           title="Confirmar" 
-          onPress={handleConfirmRental}         
+          onPress={handleConfirmRental} 
+          disabled={rentalPeriod.endFormatted && rentalPeriod.endFormatted.length > 0 ? false : true}       
         />
       </S.BoxFooter>
     </S.Container>
