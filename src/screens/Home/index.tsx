@@ -14,7 +14,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { PanGestureHandler, RectButton } from 'react-native-gesture-handler';
+import { PanGestureHandler, RectButton, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 
