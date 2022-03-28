@@ -18,13 +18,6 @@ export default {
   BoxCarImage: styled.View`
     margin-top: ${getStatusBarHeight() + 32}px;
   `,
-  BoxContent: styled.ScrollView.attrs({
-    contentContainerStyle: {
-      padding: 24,
-      alignItems: 'center'
-    },
-    showsVerticalScrollIndicator: false
-  })``,
   BoxDetails: styled.View`
     width: 100%;
     flex-direction: row;
