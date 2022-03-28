@@ -129,8 +129,7 @@ const Home = () => {
         />
       }
 
-      <PanGestureHandler onGestureEvent={onGestureEvent}>
-        <TouchableWithoutFeedback onPress={handleOpenMyCars}>
+      <PanGestureHandler onGestureEvent={onGestureEvent}>        
           <Animated.View
             style={[
               myCarsButtonStyle,
@@ -141,6 +140,7 @@ const Home = () => {
               }
             ]}
           >
+            <TouchableWithoutFeedback onPress={handleOpenMyCars}>
               <ButtonAnimated
                 style={[styles.button, {backgroundColor: theme.colors.main}]}
               >
@@ -150,8 +150,8 @@ const Home = () => {
                   color={theme.colors.shape}
                   />          
               </ButtonAnimated>
-          </Animated.View>
-        </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>
+          </Animated.View>        
       </PanGestureHandler>
       
     </S.Container>
