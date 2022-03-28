@@ -14,6 +14,7 @@ export default {
     position: absolute;
     margin-top: ${getStatusBarHeight() + 18}px;
     margin-left: 24px;
+    z-index: 2;
   `,
   BoxCarImage: styled.View`
     margin-top: ${getStatusBarHeight() + 32}px;

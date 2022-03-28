@@ -3,10 +3,16 @@ import {
   StatusBar, 
   Alert,
   TouchableWithoutFeedback,
-  TouchableWithoutFeedbackProps 
 } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  useAnimatedGestureHandler,
+  withSpring
+} from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 
@@ -18,9 +24,38 @@ import S from './styled';
 import { CarsDtosData } from '../../Dtos/catDto';
 import { Loading } from '../../components/Loading';
 
+const ButtonAnimated = Animated.createAnimatedComponent(TouchableWithoutFeedback);
+
 const Home = () => {
   const navigation = useNavigation<any>();
   const theme = useTheme();
+
+  const positionInY = useSharedValue(0);
+  const positionInX = useSharedValue(0);
+
+  const myCarsButtonStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {translateX: positionInX.value},
+        {translateY: positionInY.value},
+      ]
+    }
+  });
+
+  const onGestureEvent = useAnimatedGestureHandler({
+    onStart(_, ctx: any) {
+      ctx.positionX = positionInX.value;
+      ctx.positionY = positionInY.value;
+    },
+    onActive(event, ctx: any) {
+      positionInX.value = ctx.positionX + event.translationX;
+      positionInY.value = ctx.positionY + event.translationY;
+    },
+    onEnd() {
+      positionInX.value = withSpring(0);
+      positionInY.value = withSpring(0);
+    }
+  })
 
   const [cars, setCars] = useState<CarsDtosData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -84,15 +119,28 @@ const Home = () => {
         />
       }
 
-      <TouchableWithoutFeedback onPress={handleOpenMyCars}>
-        <S.MyCarButton>
-          <Ionicons 
-            name="ios-car-sport" 
-            size={32} 
-            color={theme.colors.shape}
-            />          
-        </S.MyCarButton>
-      </TouchableWithoutFeedback>
+      <PanGestureHandler onGestureEvent={onGestureEvent}>
+        <Animated.View
+          style={[
+            myCarsButtonStyle,
+            {
+              position: 'absolute',
+              bottom: 13,
+              right: 22,
+            }
+          ]}
+        >
+          <ButtonAnimated onPress={handleOpenMyCars}>
+            <S.MyCarButton>
+              <Ionicons 
+                name="ios-car-sport" 
+                size={32} 
+                color={theme.colors.shape}
+                />          
+            </S.MyCarButton>
+          </ButtonAnimated>
+        </Animated.View>
+      </PanGestureHandler>
       
     </S.Container>
   );

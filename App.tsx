@@ -4,8 +4,6 @@ import 'intl/locale-data/jsonp/pt-BR';
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import AppLoading from 'expo-app-loading';
-
-import { Home } from './src/screens/Home';
 import theme from './src/styles/theme';
 
 import {
