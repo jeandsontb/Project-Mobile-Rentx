@@ -3,6 +3,8 @@ import {
   StatusBar, 
   Alert,
   TouchableWithoutFeedback,
+  StyleSheet,
+  BackHandler
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -12,7 +14,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { PanGestureHandler } from 'react-native-gesture-handler';
+import { PanGestureHandler, RectButton } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 
@@ -24,7 +26,7 @@ import S from './styled';
 import { CarsDtosData } from '../../Dtos/catDto';
 import { Loading } from '../../components/Loading';
 
-const ButtonAnimated = Animated.createAnimatedComponent(TouchableWithoutFeedback);
+const ButtonAnimated = Animated.createAnimatedComponent(RectButton);
 
 const Home = () => {
   const navigation = useNavigation<any>();
@@ -91,6 +93,12 @@ const Home = () => {
     navigation.navigate('MyCars');
   }
 
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      return true;
+    });
+  }, []);
+
   return (
     <S.Container>
       <StatusBar 
@@ -104,9 +112,11 @@ const Home = () => {
             width={RFValue(108)}
             height={RFValue(12)}
           />
-          <S.TextHeaderTotal>
-            Total de {cars.length} carros
-          </S.TextHeaderTotal>
+          {!loading &&
+            <S.TextHeaderTotal>
+              Total de {cars.length} carros
+            </S.TextHeaderTotal>
+          }
         </S.BoxContent>
       </S.BoxHeader>
 
@@ -120,26 +130,28 @@ const Home = () => {
       }
 
       <PanGestureHandler onGestureEvent={onGestureEvent}>
-        <Animated.View
-          style={[
-            myCarsButtonStyle,
-            {
-              position: 'absolute',
-              bottom: 13,
-              right: 22,
-            }
-          ]}
-        >
-          <ButtonAnimated onPress={handleOpenMyCars}>
-            <S.MyCarButton>
-              <Ionicons 
-                name="ios-car-sport" 
-                size={32} 
-                color={theme.colors.shape}
-                />          
-            </S.MyCarButton>
-          </ButtonAnimated>
-        </Animated.View>
+        <TouchableWithoutFeedback onPress={handleOpenMyCars}>
+          <Animated.View
+            style={[
+              myCarsButtonStyle,
+              {
+                position: 'absolute',
+                bottom: 13,
+                right: 22,
+              }
+            ]}
+          >
+              <ButtonAnimated
+                style={[styles.button, {backgroundColor: theme.colors.main}]}
+              >
+                <Ionicons 
+                  name="ios-car-sport" 
+                  size={32} 
+                  color={theme.colors.shape}
+                  />          
+              </ButtonAnimated>
+          </Animated.View>
+        </TouchableWithoutFeedback>
       </PanGestureHandler>
       
     </S.Container>
@@ -147,3 +159,13 @@ const Home = () => {
 }
 
 export { Home };
+
+const styles = StyleSheet.create({
+  button: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})
