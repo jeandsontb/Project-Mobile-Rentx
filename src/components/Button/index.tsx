@@ -11,6 +11,7 @@ interface IButtonProps {
   onPress: () => void;
   disabled?: boolean;
   loading?: boolean;
+  light?: boolean; 
 }
 
 const Button = ({
@@ -18,7 +19,8 @@ const Button = ({
   color, 
   onPress, 
   disabled = false,
-  loading = false
+  loading = false,
+  light = false
 }: IButtonProps) => {
   const theme = useTheme();
 
@@ -30,7 +32,7 @@ const Button = ({
       <S.Container color={color} activePressButton={disabled} loadingButton={loading}>
         {disabled && loading 
           ? <ActivityIndicator color={theme.colors.shape} />
-          : <S.TextButton>{title}</S.TextButton>
+          : <S.TextButton light={light}>{title}</S.TextButton>
         }
       </S.Container>
     </TouchableWithoutFeedback>

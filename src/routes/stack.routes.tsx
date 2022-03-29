@@ -9,10 +9,12 @@ import { SchedulingComplete } from '../screens/SchedulingComplete';
 import { SchedulingDetails } from '../screens/SchedulingDetails';
 import { MyCars } from '../screens/MyCars';
 import { Splash } from '../screens/Splash';
+import { Signin } from '../screens/Signin';
 
 const StackRoutes = () => {
   return (
-    <Navigator screenOptions={{headerShown: false}} initialRouteName="Splash">
+    <Navigator screenOptions={{headerShown: false}} initialRouteName="Signin">
+      <Screen name="Signin" component={Signin}/>
       <Screen name="Splash" component={Splash}/>
       <Screen 
         name="Home" 

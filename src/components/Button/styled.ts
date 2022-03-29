@@ -9,6 +9,10 @@ interface IButtonProps extends TouchableWithoutFeedbackProps {
   loadingButton?: boolean;
 }
 
+interface ButtonTextProps {
+  light: boolean;
+}
+
 export default {
   Container: styled(RectButton)<IButtonProps>`
     width: 100%;
@@ -21,9 +25,10 @@ export default {
     opacity: ${({activePressButton, loadingButton}) => 
     (!activePressButton && !loadingButton ) ? 1 : 0.5};
   `,
-  TextButton: styled.Text`
+  TextButton: styled.Text<ButtonTextProps>`
     font-family: ${({theme}) => theme.fonts.primary_500};
     font-size: ${RFValue(15)}px;
-    color: ${({theme}) => theme.colors.shape}
+    color: ${({theme, light}) => 
+    light ? theme.colors.header : theme.colors.shape}
   `,
 }
