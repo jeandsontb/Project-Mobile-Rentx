@@ -2,6 +2,7 @@ import 'intl';
 import 'intl/locale-data/jsonp/pt-BR';
 
 import React from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from 'styled-components';
 import AppLoading from 'expo-app-loading';
 import theme from './src/styles/theme';
@@ -34,7 +35,9 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme} >
-      <Routes />
+      <GestureHandlerRootView style={{flex: 1}}>
+        <Routes />
+      </GestureHandlerRootView>
     </ThemeProvider>
   );
 }
