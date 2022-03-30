@@ -24,6 +24,10 @@ export default {
     line-height: ${RFValue(25)}px;
     margin-top: 16px;
   `,
+  Form: styled.View`
+    width: 100%;
+    margin: 64px 0;
+  `,
   Footer: styled.View``
 }
 

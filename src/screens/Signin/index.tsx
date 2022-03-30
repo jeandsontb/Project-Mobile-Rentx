@@ -4,6 +4,8 @@ import { Button } from '../../components/Button';
 import { useTheme } from 'styled-components';
 
 import S from './styled';
+import {Input} from '../../components/Input';
+import { InputPassword } from '../../components/InputPassword';
 
 const Signin = () => {
   const theme = useTheme();
@@ -24,6 +26,21 @@ const Signin = () => {
           uma experiência incrível.
         </S.SubTitle>
       </S.Header>
+
+      <S.Form>
+        <Input 
+          iconName="mail"
+          placeholder="E-mail"
+          keyboardType="email-address"
+          autoCorrect={false}
+          autoCapitalize="none"
+        />
+        
+        <InputPassword 
+          iconName='lock'
+          placeholder="Senha"
+        />
+      </S.Form>
 
       <S.Footer>
         <Button 

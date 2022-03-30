@@ -24,6 +24,7 @@ export default {
   };
     opacity: ${({activePressButton, loadingButton}) => 
     (!activePressButton && !loadingButton ) ? 1 : 0.5};
+    margin-bottom: 8px;
   `,
   TextButton: styled.Text<ButtonTextProps>`
     font-family: ${({theme}) => theme.fonts.primary_500};
