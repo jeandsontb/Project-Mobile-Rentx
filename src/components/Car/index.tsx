@@ -22,8 +22,8 @@ const Car = ({ data, ...rest }: IDataProps) => {
 
           <S.BoxAbout>
             <S.BoxRent>
-              <S.TextPeriod>{data.rent.period}</S.TextPeriod>
-              <S.TextPrice>{`R$ ${data.rent.price}`}</S.TextPrice>
+              <S.TextPeriod>{data.period}</S.TextPeriod>
+              <S.TextPrice>{`R$ ${data.price}`}</S.TextPrice>
             </S.BoxRent>
 
             <S.BoxType>

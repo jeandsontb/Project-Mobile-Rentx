@@ -110,11 +110,11 @@ const CarDetails = () => {
           </S.BoxDescription>
 
           <S.BoxRent>
-            <S.TextPeriod>{car.rent.period}</S.TextPeriod>
+            <S.TextPeriod>{car.period}</S.TextPeriod>
             <S.TextPrice>{new Intl.NumberFormat('pt-BR', {
                 style: 'currency',
                 currency: 'BRL'
-              }).format(car.rent.price)}
+              }).format(car.price)}
             </S.TextPrice>
           </S.BoxRent>
         </S.BoxDetails>

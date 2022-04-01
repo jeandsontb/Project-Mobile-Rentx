@@ -4,7 +4,10 @@ import { FlatList, ViewToken } from 'react-native';
 import S from './styled';
 
 interface IImagesProps {
-  imagesUrl: string[];
+  imagesUrl: {
+    id: string;
+    photo: string;
+  }[];
 }
 
 interface ChangePointsImageSlider {
@@ -23,9 +26,9 @@ const ImageSlider = ({ imagesUrl }: IImagesProps) => {
   return (
     <S.Container>
       <S.BoxImageIndex>
-        {imagesUrl.map((_, index) => (
+        {imagesUrl.map((item, index) => (
           <S.ImageIndex 
-            key={index}
+            key={item.id}
             active={index === imageIndex} 
           />
         ))}
@@ -34,11 +37,11 @@ const ImageSlider = ({ imagesUrl }: IImagesProps) => {
       
         <FlatList 
           data={imagesUrl}
-          keyExtractor={key => key}
+          keyExtractor={item => item.id}
           renderItem={({item}) => 
           <S.BoxCarImageWrapper>
             <S.ImageCar 
-              source={{uri: item}}
+              source={{uri: item.photo}}
               resizeMode="contain"
             />
           </S.BoxCarImageWrapper>

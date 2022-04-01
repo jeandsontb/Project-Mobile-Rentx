@@ -13,11 +13,13 @@ import { useTheme } from 'styled-components';
 
 import S from './styled';
 import {Input} from '../../components/Input';
+import { useAuth } from '../../hooks/auth';
 import { InputPassword } from '../../components/InputPassword';
 
 const Signin = () => {
   const theme = useTheme();
   const navigation = useNavigation<any>();
+  const { signIn } = useAuth();
 
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
@@ -30,6 +32,8 @@ const Signin = () => {
       })
   
       await schema.validate({email, password});
+
+      signIn({email, password});
     } catch (err) {
       if(err instanceof Yup.ValidationError) {
         return Alert.alert('Opss!', err.message);

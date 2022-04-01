@@ -50,7 +50,7 @@ const Splash = () => {
   });
 
   const startApp = () => {
-    navigation.navigate("Home");
+    navigation.navigate("Signin");
   }
 
   useEffect(() => {

@@ -7,7 +7,7 @@ import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
 import { Button } from '../../../components/Button';
 import { InputPassword } from '../../../components/InputPassword';
-import { Confirmation } from '../../Confirmation';
+import { api } from '../../../services/api';
 import S from './styled';
 
 interface Params {
@@ -28,7 +28,7 @@ const SignUpSecondaryStep = () => {
 
   const { user } = route.params as Params;
 
-  const handlerRegister = () => {
+  const handlerRegister = async () => {
     if(!password || !passwordConfirm) {
       return Alert.alert('Opss!','Informe os valores nos campos.')
     }
@@ -37,11 +37,20 @@ const SignUpSecondaryStep = () => {
       return Alert.alert('Opss!','Senhas não são iguais');
     }
 
-    navigation.navigate('Confirmation', {
-      nextScreenRoute: 'Signin',
-      title: 'Conta criada!',
-      message: `Agora é só fazer o login\ne aproveitar`,
-    });
+    await api.post('/users', {
+      name: user.name,
+      email: user.email,
+      driver_license: user.driverLicence,
+      password,
+    }).then(() => {
+      navigation.navigate('Confirmation', {
+        nextScreenRoute: 'Signin',
+        title: 'Conta criada!',
+        message: `Agora é só fazer o login\ne aproveitar`,
+      });
+    }).catch(() => {
+      Alert.alert('Opss!', 'Não foi possível cadastrar!');
+    });    
   }
 
   const handleBack = () => {
