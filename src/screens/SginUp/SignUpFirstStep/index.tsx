@@ -1,5 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
-import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { useState } from 'react';
+import * as Yup from 'yup';
 
 import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
@@ -10,12 +12,32 @@ import S from './styled';
 const SignUpFirstStep = () => {
   const navigation = useNavigation<any>();
 
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [driverLicence, setDriverLicence] = useState('');
+
   const handleBack = () => {
     navigation.goBack();
   }
 
-  const handleNextStep = () => {
-    navigation.navigate('SignUpSecondaryStep');
+  const handleNextStep = async () => {
+   try {
+      const schema = Yup.object().shape({
+        driverLicence: Yup.string().required('CNH é obrigatório'),
+        email: Yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
+        name: Yup.string().required('Nome é obrigatório'),
+      })
+
+      const data = {name, email, driverLicence};
+
+      await schema.validate(data);
+
+    navigation.navigate('SignUpSecondaryStep', { user: data });
+   } catch (err) {
+     if(err instanceof Yup.ValidationError) {
+       return Alert.alert('Opss', err.message);
+     }
+   }
   }
 
   return (
@@ -43,18 +65,24 @@ const SignUpFirstStep = () => {
           <Input 
             iconName="user"
             placeholder="Nome"
+            onChangeText={setName}
+            value={name}
           />
 
           <Input 
             iconName="mail"
             placeholder="E-mail"
             keyboardType="email-address"
+            onChangeText={setEmail}
+            value={email}
           />
 
           <Input 
             iconName="credit-card"
             placeholder="CNH"
             keyboardType="numeric"
+            onChangeText={setDriverLicence}
+            value={driverLicence}
           />
         </S.BoxForm>
 

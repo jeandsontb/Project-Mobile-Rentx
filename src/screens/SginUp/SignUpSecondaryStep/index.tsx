@@ -1,17 +1,48 @@
-import { useNavigation } from '@react-navigation/native';
-import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useState } from 'react';
+import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { useTheme } from 'styled-components';
 
 import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
 import { Button } from '../../../components/Button';
-import { Input } from '../../../components/Input';
 import { InputPassword } from '../../../components/InputPassword';
+import { Confirmation } from '../../Confirmation';
 import S from './styled';
 
+interface Params {
+  user: {
+    name: string; 
+    email: string;
+    driverLicence: string;
+  }
+}
+
 const SignUpSecondaryStep = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
+  const route = useRoute();
   const theme = useTheme();
+
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+
+  const { user } = route.params as Params;
+
+  const handlerRegister = () => {
+    if(!password || !passwordConfirm) {
+      return Alert.alert('Opss!','Informe os valores nos campos.')
+    }
+
+    if(password !== passwordConfirm) {
+      return Alert.alert('Opss!','Senhas não são iguais');
+    }
+
+    navigation.navigate('Confirmation', {
+      nextScreenRoute: 'Signin',
+      title: 'Conta criada!',
+      message: `Agora é só fazer o login\ne aproveitar`,
+    });
+  }
 
   const handleBack = () => {
     navigation.goBack();
@@ -42,11 +73,15 @@ const SignUpSecondaryStep = () => {
           <InputPassword 
             iconName="lock"
             placeholder="Senha"
+            onChangeText={setPassword}
+            value={password}
           />
 
             <InputPassword 
               iconName="lock"
               placeholder="Repetir Senha"
+              onChangeText={setPasswordConfirm}
+              value={passwordConfirm}
             />
 
         </S.BoxForm>
@@ -54,7 +89,7 @@ const SignUpSecondaryStep = () => {
         <Button 
           title="Cadastrar"
           color={theme.colors.success}
-          onPress={() => {}}
+          onPress={handlerRegister}
         />
       </S.Container>
      </TouchableWithoutFeedback>

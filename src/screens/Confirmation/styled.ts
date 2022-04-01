@@ -17,6 +17,7 @@ export default {
     font-size: ${RFValue(30)}px;
     color: ${({theme}) => theme.colors.shape};
     font-family: ${({theme}) => theme.fonts.secondary_600};
+    height: 60px;
     margin-top: 40px;
   `,
   TextMessage: styled.Text`
@@ -25,6 +26,7 @@ export default {
     font-family: ${({theme}) => theme.fonts.primary_400};
     line-height: ${RFValue(25)}px;
     text-align: center;
+    height: 60px;
     margin-top: 16px;
   `,
   BoxFooter: styled.View`
