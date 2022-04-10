@@ -1,4 +1,5 @@
 import 'intl';
+import 'react-native-gesture-handler';
 import 'intl/locale-data/jsonp/pt-BR';
 
 import React from 'react';
