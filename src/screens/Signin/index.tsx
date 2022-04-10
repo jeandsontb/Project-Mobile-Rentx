@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   StatusBar, 
   KeyboardAvoidingView, 
@@ -33,11 +33,12 @@ const Signin = () => {
   
       await schema.validate({email, password});
 
-      signIn({email, password});
+      await signIn({email, password});
     } catch (err) {
       if(err instanceof Yup.ValidationError) {
         return Alert.alert('Opss!', err.message);
       }
+      console.log(err);
       return Alert.alert('Erro na autenticação', 'Ocorreu um erro ao fazer login, verifique as credenciais.')
     }
   }
@@ -54,7 +55,7 @@ const Signin = () => {
       <TouchableWithoutFeedback 
         onPress={Keyboard.dismiss}
       >
-        <S.Container>
+        <S.Container onTouchStart={Keyboard.dismiss}>
           <StatusBar 
             barStyle="dark-content"
             backgroundColor="transparent"

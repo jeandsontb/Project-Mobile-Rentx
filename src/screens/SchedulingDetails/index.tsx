@@ -37,48 +37,49 @@ const SchedulingDetails = () => {
   const [ isLoading, setIsLoading ] = useState(false);
   const [ isDisabledButton, setIsDisabledButton ] = useState(false);
 
-  const rentTotal = Number(dates.length * car.rent.price);
+  const rentTotal = Number(dates.length * car.price);
 
   const handleConfirmRental = async () => {
-    setIsLoading(true);
-    setIsDisabledButton(true);
+    // setIsLoading(true);
+    // setIsDisabledButton(true);
 
-    const { data } = await api.get(`/schedules_bycars/${car.id}`);
+    const { data } = await api.get(`/cars/${car.id}`);
     const unavailable_dates = [
       // ...data.unavailable_dates,
       ...dates,
     ];
 
-    const verifyByCarRental = data.unavailable_dates.findIndex((car: any) => dates.includes(car))
+    const verifyByCarRental = data.unavailable_dates.findIndex((car: any) => dates.includes(car));
 
     if(verifyByCarRental > -1) {
       Alert.alert('Veículo já agendado para esse período');
       return;
     } 
 
-    await api.post('/schedules_byuser', {
+    await api.post('/rentals', {
       user_id: 1,
       car,
       startDate: format(parseISO(dates[0]), 'dd/MM/yyyy'),
       endDate: format(parseISO(dates[dates.length - 1]), 'dd/MM/yyyy'),
+      total: rentTotal
     });
 
-    api.put(`/schedules_bycars/${car.id}`, {
-      id: car.id,
-      unavailable_dates
-    })
-    .then(() => {
-      navigation.navigate('Confirmation', {
-        nextScreenRoute: 'Home',
-        title: 'Carro Alugado!',
-        message: `Agora você só precisa ir\naté a concessionária da Rentx\npegar o seu automóvel`,
-      })
-    })
-    .catch(() => {
-      Alert.alert('Não foi possível confirmar o agendamento');
-      setIsLoading(false);
-      setIsDisabledButton(false);
-    });
+    // api.put(`/schedules_bycars/${car.id}`, {
+    //   id: car.id,
+    //   unavailable_dates
+    // })
+    // .then(() => {
+    //   navigation.navigate('Confirmation', {
+    //     nextScreenRoute: 'Home',
+    //     title: 'Carro Alugado!',
+    //     message: `Agora você só precisa ir\naté a concessionária da Rentx\npegar o seu automóvel`,
+    //   })
+    // })
+    // .catch(() => {
+    //   Alert.alert('Não foi possível confirmar o agendamento');
+    //   setIsLoading(false);
+    //   setIsDisabledButton(false);
+    // });
   }
 
   const handleBack = () => {
@@ -117,12 +118,12 @@ const SchedulingDetails = () => {
           </S.BoxDescription>
 
           <S.BoxRent>
-            <S.TextPeriod>{car.rent.period}</S.TextPeriod>
+            <S.TextPeriod>{car.price}</S.TextPeriod>
             <S.TextPrice>
               {new Intl.NumberFormat('pt-BR', {
                 style: 'currency',
                 currency: 'BRL'
-              }).format(car.rent.price)}
+              }).format(car.price)}
             </S.TextPrice>
           </S.BoxRent>
         </S.BoxDetails>
@@ -170,7 +171,7 @@ const SchedulingDetails = () => {
               {new Intl.NumberFormat('pt-BRL', {
                 style: 'currency',
                 currency: 'BRL'
-              }).format(car.rent.price)}
+              }).format(car.price)}
               {` x ${dates.length} diárias`}
             </S.TextRentalPriceQuota>
             <S.TextRentalPriceTotal>
