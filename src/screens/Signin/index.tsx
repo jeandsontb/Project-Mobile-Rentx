@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { 
   StatusBar, 
   KeyboardAvoidingView, 
@@ -38,7 +38,6 @@ const Signin = () => {
       if(err instanceof Yup.ValidationError) {
         return Alert.alert('Opss!', err.message);
       }
-      console.log(err);
       return Alert.alert('Erro na autenticação', 'Ocorreu um erro ao fazer login, verifique as credenciais.')
     }
   }

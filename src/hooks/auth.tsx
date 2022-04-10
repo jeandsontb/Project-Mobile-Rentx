@@ -3,7 +3,7 @@ import { createContext, useState, useContext, ReactNode, useEffect } from 'react
 import { api } from '../services/api';
 
 import { database } from '../database';
-import { User as ModelUser } from '../database/models/User';
+import { User as ModelUser } from '../database/model/User';
 
 interface User {
   id: string;
@@ -56,7 +56,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         })
       })
   
-      setData({ ...user, token})
+      setData({ ...user, token});
     } catch(error) {
       throw new Error(error as string);
     }
@@ -67,7 +67,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       const userCollection = database.get<ModelUser>('users');
       const response = await userCollection.query().fetch();
 
-      console.log(response)
+      if(response.length > 0 ) {
+        const userData = response[0]._raw as unknown as User;
+        api.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`;
+        setData(userData);
+      }
     }
 
     loadUserData();
