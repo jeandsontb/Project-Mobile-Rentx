@@ -16,6 +16,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { PanGestureHandler, RectButton } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 import Logo from '../../assets/logo.svg';
 import { Car } from '../../components/Car';
@@ -30,6 +31,7 @@ const ButtonAnimated = Animated.createAnimatedComponent(RectButton);
 const Home = () => {
   const navigation = useNavigation<any>();
   const theme = useTheme();
+  const netInfo = useNetInfo();
 
   const positionInY = useSharedValue(0);
   const positionInX = useSharedValue(0);
@@ -91,6 +93,14 @@ const Home = () => {
   const handleOpenMyCars = () => {
     navigation.navigate('MyCars');
   }
+
+  useEffect(() => {
+    if(netInfo.isConnected) {
+      Alert.alert('Você está conectado.');
+    } else {
+      Alert.alert('Você está Off-line.');
+    }
+  }, [netInfo.isConnected]);
 
   return (
     <S.Container>
