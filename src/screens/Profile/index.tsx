@@ -1,8 +1,9 @@
-import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import S from './styled';
 import { useTheme } from 'styled-components';
 import { Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import * as Yup from 'yup';
 
 import { BackButton } from '../../components/BackButton';
 import { useNavigation } from '@react-navigation/native';
@@ -11,11 +12,12 @@ import { useState } from 'react';
 import { Input } from '../../components/Input';
 import { InputPassword } from '../../components/InputPassword';
 import { useAuth } from '../../hooks/auth';
+import { Button } from '../../components/Button';
 
 const Profile = () => {
   const theme = useTheme();
   const navigation = useNavigation();
-  const { user, signOut } = useAuth();
+  const { user, signOut, updateUser } = useAuth();
 
   const [option, setOption ] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
   const [avatar, setAvatar ] = useState(user.avatar);
@@ -47,6 +49,52 @@ const Profile = () => {
     }
   }
 
+  const handleProfileUpdate = async () => {
+    try {
+      const schema = Yup.object().shape({
+        driverLicense: Yup.string().required('CNH é obrigatório'),
+        name: Yup.string().required('Nome é obrigatório')
+      });
+
+      const data = { name, driverLicense }
+      await schema.validate(data);
+
+      await updateUser({
+        id: user.id,
+        user_id: user.user_id,
+        email: user.email,
+        name,
+        driver_license: driverLicense,
+        avatar,
+        token: user.token
+      });
+
+      Alert.alert('Perfil atualizado!')
+
+    } catch (err) {
+      if(err instanceof Yup.ValidationError) {
+        Alert.alert('Opss!', err.message);
+        return;
+      }
+      Alert.alert('Opss! Não foi possível atualizar perfil.')
+    }
+  }
+
+  const handleSignOut = () => {
+    Alert.alert('Tem certeza?', 'Lembre-se que para acessar o aplicativo será necessário estar conectado.',
+      [
+        {
+          text: 'Cancelar',
+          onPress: () => {}
+        },
+        {
+          text: 'Sair',
+          onPress: () => signOut()
+        }
+      ]
+    );
+  }
+
   return (
     <KeyboardAvoidingView
       behavior='position'
@@ -58,7 +106,7 @@ const Profile = () => {
             <S.HeaderTop>
               <BackButton color={theme.colors.shape} onPress={goBack} />
               <S.TextHeaderTitle>Editar Perfil</S.TextHeaderTitle>
-              <S.ButtonLogout onPress={signOut}>
+              <S.ButtonLogout onPress={handleSignOut}>
                 <Feather name='power' size={24} color={theme.colors.shape}/>
               </S.ButtonLogout>
             </S.HeaderTop>
@@ -127,7 +175,10 @@ const Profile = () => {
               </S.BoxSection>)
             }
 
-            
+            <Button 
+              title='Salvar alterações'
+              onPress={handleProfileUpdate}
+            />
           </S.Content>
         </S.Container>
       </TouchableWithoutFeedback>
