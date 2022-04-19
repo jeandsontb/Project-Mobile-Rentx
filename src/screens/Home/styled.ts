@@ -1,22 +1,20 @@
-import { RFValue } from 'react-native-responsive-fontsize';
-import { 
-  FlatList, 
-  FlatListProps, 
-} from 'react-native';
-import styled from 'styled-components/native';
+import { RFValue } from "react-native-responsive-fontsize";
+import { FlatList, FlatListProps } from "react-native";
+import styled from "styled-components/native";
 
-import { CarsDtosData } from '../../Dtos/catDto';
-import { RectButton } from 'react-native-gesture-handler';
+import { CarsDtosData } from "../../Dtos/catDto";
+import { Car } from "../../database/model/Car";
+import { RectButton } from "react-native-gesture-handler";
 
 export default {
   Container: styled.View`
     flex: 1;
-    background-color: ${({theme}) => theme.colors.background_primary};
+    background-color: ${({ theme }) => theme.colors.background_primary};
   `,
   BoxHeader: styled.View`
     width: 100%;
     height: 113px;
-    background-color: ${({theme}) => theme.colors.header}; 
+    background-color: ${({ theme }) => theme.colors.header};
     justify-content: flex-end;
     padding: 32px 24px;
   `,
@@ -27,20 +25,21 @@ export default {
   `,
   TextHeaderTotal: styled.Text`
     font-size: ${RFValue(15)}px;
-    font-family: ${({theme}) => theme.fonts.primary_400};
-    color: ${({theme}) => theme.colors.text};
+    font-family: ${({ theme }) => theme.fonts.primary_400};
+    color: ${({ theme }) => theme.colors.text};
   `,
-  ListCarComponent: styled(FlatList as new 
-    (props: FlatListProps<CarsDtosData>) => FlatList<CarsDtosData>).attrs({
+  ListCarComponent: styled(
+    FlatList as new (props: FlatListProps<Car>) => FlatList<Car>
+  ).attrs({
     contentContainerStyle: {
-      padding: 24
+      padding: 24,
     },
-    showsVerticalScrollIndicator: false
+    showsVerticalScrollIndicator: false,
   })``,
   MyCarButton: styled(RectButton)`
     width: 60px;
     height: 60px;
-    background-color: ${({theme}) => theme.colors.main};
+    background-color: ${({ theme }) => theme.colors.main};
     justify-content: center;
     align-items: center;
     border-radius: 30px;
@@ -48,4 +47,4 @@ export default {
     right: 22px;
     bottom: 13px;
   `,
-}
+};

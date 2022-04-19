@@ -1,16 +1,18 @@
-import React from 'react';
-import { TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from 'react-native';
+import React from "react";
+import {
+  TouchableWithoutFeedback,
+  TouchableWithoutFeedbackProps,
+} from "react-native";
 
-import S from './styled';
-import { getAcessoryIcon } from '../../utils/getAcessoryIcon';
-import { CarsDtosData } from '../../Dtos/catDto';
+import S from "./styled";
+import { getAcessoryIcon } from "../../utils/getAcessoryIcon";
+import { Car as ModelCar } from "../../database/model/Car";
 
-interface IDataProps  extends TouchableWithoutFeedbackProps {
-  data: CarsDtosData;
+interface IDataProps extends TouchableWithoutFeedbackProps {
+  data: ModelCar;
 }
 
 const Car = ({ data, ...rest }: IDataProps) => {
-
   const MotorIcon = getAcessoryIcon(data.fuel_type);
 
   return (
@@ -32,10 +34,10 @@ const Car = ({ data, ...rest }: IDataProps) => {
           </S.BoxAbout>
         </S.BoxDetails>
 
-        <S.ImageCar source={{uri: data.thumbnail}} resizeMode="contain" />
+        {/* <S.ImageCar source={{ uri: data.thumbnail }} resizeMode="contain" /> */}
       </S.Container>
     </TouchableWithoutFeedback>
   );
-}
+};
 
 export { Car };
